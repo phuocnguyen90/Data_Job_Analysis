@@ -1,0 +1,3 @@
+
+from functions.CNN_model_train import predict_text_cnn
+print(predict_text_cnn)

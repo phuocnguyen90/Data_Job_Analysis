@@ -35,8 +35,5 @@ remove_words = ['data','year','least','working','business',
 # Importing the dataset
 nlp = spacy.load('en_core_web_md')
 
-df = pd.read_csv('data_job_new.csv')
-test = pd.read_csv('Data_Jobs.csv')
-
-test_dataframe = test.dropna(subset=['Job_Description', 'Data_Engineer', 'Data_Analyst', 'Data_Scientist', 'Business_Analyst', 'Business_Intelligence'])
-
+df = pd.read_csv('dataset\data_job_new.csv')
+test = pd.read_csv('dataset\Data_Jobs.csv')
