@@ -40,3 +40,8 @@ def predict_text_cnn(model, data, job_categories=job_categories):
     y_test_predicted = pd.DataFrame(predictions, columns=job_categories)
     
     return y_test_predicted
+
+def predict_salary(model,data, job_categories=job_categories):
+
+    predictions = model.predict(X)
+    y_test_predicted = pd.DataFrame(predictions, columns=job_categories)

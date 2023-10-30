@@ -141,7 +141,6 @@ def generate_job_description_word_cloud(dataframe):
     plt.show()
 
 
-
 def calculate_top_skills_per_category(dataframe, technical_skills, remove_words):
     top_technical_skills = {}
     top_soft_skills = {}

@@ -6,14 +6,13 @@ from tensorflow.keras.models import load_model
 # trained_model = load_model('trained_model/trained_textCNN_model.keras')
 # updated_df=predict_text_cnn(trained_model, df)
 
-# updated_df.to_csv('predicted_df_for_manual_review.csv', index=False)
-
-# predict a single job with an array ['Job description','Job title']
 
 # LOAD THE TRAINED MODEL FROM SAVED WEIGHTS
-
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
+
+# predict a single job with an array ['Job description','Job title']
+job_to_predict= ['Fundamental knowledge of key machine learning and data science concepts across a number of disciplines such as Natural Language Processing, Social Network Analysis, Time Series Analysis, Computer Vision and others','Data Analyst']
 
 #Create a blank model that matches the architecture of the TextCNN model
 blank_model = Sequential()
@@ -28,8 +27,6 @@ blank_model.add(Dense(6, activation='sigmoid'))
 
 # Load the saved weights into this blank model
 blank_model.load_weights('trained_model/trained_textCNN_weights.h5')
-
-job_to_predict= ['Fundamental knowledge of key machine learning and data science concepts across a number of disciplines such as Natural Language Processing, Social Network Analysis, Time Series Analysis, Computer Vision and others','Data Analyst']
 
 
 
