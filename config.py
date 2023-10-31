@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import spacy
+import os
 
 job_categories = ['Data_Engineer', 'Data_Analyst', 'Data_Scientist', 'Business_Analyst', 'Business_Intelligence', 'Others']
 
@@ -32,8 +33,12 @@ remove_words = ['data','year','least','working','business',
         'processing','hn','kinh','nghi','experience','relevant'
     ]
 
+file_path_train = os.path.join('dataset', 'Data_Jobs.csv')
+file_path_deploy = os.path.join('dataset', 'data_job_new.csv')
+
+
 # Importing the dataset
 nlp = spacy.load('en_core_web_md')
 
-df = pd.read_csv('dataset\data_job_new.csv')
-test = pd.read_csv('dataset\Data_Jobs.csv')
+df = pd.read_csv(file_path_deploy)
+test = pd.read_csv(file_path_train)

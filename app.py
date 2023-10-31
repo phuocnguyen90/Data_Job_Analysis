@@ -15,7 +15,7 @@ def predict():
     job_description = request.form['job_description']
 
     # Pass the job_title and job_description to predict.py using subprocess
-    process = subprocess.Popen(['python', 'predict.py', job_title, job_description], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['/usr/bin/python3', 'predict.py', job_title, job_description], stdout=subprocess.PIPE)
     output, _ = process.communicate()
     predicted_salary = output.decode('utf-8').strip()
 

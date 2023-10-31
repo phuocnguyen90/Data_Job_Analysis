@@ -28,9 +28,15 @@ blank_model.add(Dense(6, activation='sigmoid'))
 # Load the saved weights into this blank model
 blank_model.load_weights('trained_model/trained_textCNN_weights.h5')
 
-
-
 # Get predictions
-predictions = predict_text_cnn(blank_model, job_to_predict)
+# predictions = predict_text_cnn(blank_model, job_to_predict)
+# print(predictions)
 
-print(predictions)
+def predict_salary(job_description, job_title):
+    # Preprocess the input data
+    processed_data = preprocess_data(job_description, job_title)
+
+    # Get predictions from the model
+    predicted_salary = blank_model.predict(processed_data)
+
+    return predicted_salary
