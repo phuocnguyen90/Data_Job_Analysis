@@ -1,12 +1,9 @@
-from .config import *
-
+from .. import config
 from sklearn.feature_extraction.text import TfidfVectorizer
 import xgboost as xgb
-from sklearn.multioutput import MultiOutputClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_score, recall_score, f1_score
@@ -24,14 +21,6 @@ def job_cat_data_process(dataframe, job_categories):
     y = dataframe[job_categories]
     return X, y
 
-def train_binary_relevance(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=109)
-    br_clf = MultiOutputClassifier(MultinomialNB())
-    br_clf.fit(X_train, y_train)
-    y_predicted = br_clf.predict(X_test)
-    accuracy = br_clf.score(X_test, y_test)
-    print("Binary Relevance Model accuracy:", accuracy)
-    return y_test, y_predicted
 
 def train_multilabel_classifier(X, y, job_categories):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -66,14 +55,11 @@ def train_xgboost_classifier(X, y, job_categories):
     return y_test, y_pred
 
 # Example usage:
-X, y = job_cat_data_process(df, job_categories)
-
-# Binary Relevance
-y_test_br, y_pred_br = train_binary_relevance(X, y)
+X, y = job_cat_data_process(config.df, config.job_categories)
 
 # Multilabel Classifier
-y_test_mc, y_pred_mc = train_multilabel_classifier(X, y, job_categories)
+y_test_mc, y_pred_mc = train_multilabel_classifier(X, y, config.job_categories)
 
 # XGBoost Classifier
-y_test_xgb, y_pred_xgb = train_xgboost_classifier(X, y, job_categories)
+y_test_xgb, y_pred_xgb = train_xgboost_classifier(X, y, config.job_categories)
 

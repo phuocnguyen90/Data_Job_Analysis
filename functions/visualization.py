@@ -8,9 +8,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from wordcloud import WordCloud
-from .config import *
+from .. import config
 from collections import Counter
 from sklearn.metrics.pairwise import cosine_similarity
+
 def plot_job_category_counts(job_categories, dataframe):
     category_counts = []
 
@@ -130,7 +131,7 @@ def generate_job_description_word_cloud(dataframe):
             filtered_words[i+1] = ""
 
 
-    filtered_words = [word for word in filtered_words if word not in remove_words]
+    filtered_words = [word for word in filtered_words if word not in config.remove_words]
 
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(" ".join(filtered_words))
 
@@ -145,7 +146,7 @@ def calculate_top_skills_per_category(dataframe, technical_skills, remove_words)
     top_technical_skills = {}
     top_soft_skills = {}
 
-    categories = job_categories
+    categories = config.job_categories
 
     for category in categories:
         descriptions = dataframe[dataframe[category] == 1]['Job_Description']
@@ -207,7 +208,7 @@ def generate_soft_skill(job_category, job_descriptions, soft_skills):
         processed_description = " ".join(unique_words)
 
         # Load the processed description into spaCy
-        doc = nlp(processed_description)
+        doc = config.nlp(processed_description)
 
         # Access individual tokens
         tokens = [token.text for token in doc]
@@ -220,7 +221,7 @@ def generate_soft_skill(job_category, job_descriptions, soft_skills):
 
         # Initialize a dictionary to store soft skill vectors
         soft_skill_vectors = {}
-        skill_doc = nlp(skill)
+        skill_doc = config.nlp(skill)
         soft_skill_vectors[skill] = skill_doc.vector
 
         # List of all tokens (from the processed description)
@@ -257,7 +258,7 @@ def calculate_soft_skill_occurrences(job_category, job_descriptions, soft_skills
     processed_description = " ".join(unique_words)
 
     # Load the processed description into spaCy
-    doc = nlp(processed_description)
+    doc = config.nlp(processed_description)
 
     # Create a dictionary to store skill occurrences
     skill_occurrences = {skill: 0 for skill in soft_skills}

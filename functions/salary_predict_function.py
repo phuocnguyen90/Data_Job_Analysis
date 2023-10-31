@@ -1,7 +1,6 @@
 import pandas as pd
 import nltk 
-
-from config import nlp
+from .. import config 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
@@ -10,7 +9,7 @@ label_encoder = LabelEncoder()
 def phrase_tokenizer(text):
 
   # Tokenize the job description
-  doc = nlp(text)
+  doc = config.nlp(text)
 
   # Extract noun phrases while retaining the original text
   noun_phrases = []
@@ -44,7 +43,7 @@ def create_skill_encoding_table(skills, job_descriptions):
 def skills_search(job_descriptions):
 
   # Tokenize the job description
-  doc = nlp(job_descriptions)
+  doc = config.nlp(job_descriptions)
 
   # Initialize lists to store found skills
   exact_matches = []
@@ -52,12 +51,12 @@ def skills_search(job_descriptions):
 
   # Iterate through tokens in the job description
   for token in doc:
-      for skill in skills:
+      for skill in config.skills:
           # Exact match
           if token.text.lower() == skill.lower():
               exact_matches.append(skill)
           # Semantic similarity
-          elif nlp(token.text).similarity(nlp(skill)) > 0.7: #Edit the threshold here 0.7
+          elif config.nlp(token.text).similarity(config.nlp(skill)) > 0.7: #Edit the threshold here 0.7
               semantic_matches.append(skill)
 
   # Remove duplicates

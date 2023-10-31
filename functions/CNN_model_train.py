@@ -1,5 +1,6 @@
 import pandas as pd
-from config import *
+import numpy as np
+from .. import config
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -14,7 +15,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.class_weight import compute_class_weight
 
 
-def train_text_cnn(dataframe, job_categories=job_categories,save_model=False):
+def train_text_cnn(dataframe, job_categories=config.job_categories,save_model=False):
     # Define X as the job descriptions (JD_Trans)
     X_desc = dataframe['Job_Description']
     X_title = dataframe['Job_Title']

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
+from predict import get_category, format_prediction, category_names
 import subprocess
+
 
 app = Flask(__name__, template_folder="templates")
 
@@ -13,13 +15,18 @@ def index():
 def predict():
     job_title = request.form['job_title']
     job_description = request.form['job_description']
+    yoe = request.form['yoe']
+    est_salary = request.form['est_salary']
+    
+    # Call the get_category function directly with user inputs
+    predicted_results = get_category(job_description, job_title, yoe, est_salary)
+    
+    # Format the prediction into a human-readable format
+    formatted_prediction = format_prediction(predicted_results)
 
-    # Pass the job_title and job_description to predict.py using subprocess
-    process = subprocess.Popen(['/usr/bin/python3', 'predict.py', job_title, job_description], stdout=subprocess.PIPE)
-    output, _ = process.communicate()
-    predicted_salary = output.decode('utf-8').strip()
+    # Returning the formatted prediction as a string response
+    return f"Predicted Category: {formatted_prediction}"
 
-    return f"Predicted Salary: {predicted_salary}"
 
 if __name__ == '__main__':
         app.run(host="0.0.0.0", port=50100, debug=True)

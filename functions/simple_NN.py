@@ -1,5 +1,6 @@
 import pandas as pd
-from config import *
+import numpy as np
+from .. import config
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -28,7 +29,7 @@ vectorizer_desc = TfidfVectorizer(
     token_pattern=r'\w{3,}'
 )
 
-def train_neural_network(dataframe, job_to_list=job_categories, save_model=False):
+def train_neural_network(dataframe, job_to_list=config.job_categories, save_model=False):
     X_title = vectorizer_title.fit_transform(dataframe['Job_Title']).toarray()
     X_desc = vectorizer_desc.fit_transform(dataframe['Job_Description']).toarray()
     X = np.concatenate((X_title, X_desc), axis=1)

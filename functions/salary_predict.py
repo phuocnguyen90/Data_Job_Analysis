@@ -1,18 +1,19 @@
 import pandas as pd
 import numpy as np
-from config import preprocess_dataframe, df
+from .. import config
 from salary_predict_function import phrase_tokenizer, skills_search, feature_engineer, feature_select
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error
 
+df = config.df
 
 # Pre-generated skills set table. Can be generated with visualization.generate_soft_skill but will take a while
 skill_table=pd.read_csv('skill_table.csv')
 
 xgb_df = feature_engineer(df,col_to_lbl=['Location'])
-xgb_df = preprocess_dataframe(xgb_df,remove_outliers=True)
+xgb_df = config.preprocess_dataframe(xgb_df,remove_outliers=True)
 
 features = ['YOE', 'Min_level', 'YOE', 'Location', 'Overseas', 'VN']
 categorical_columns = ['Location']

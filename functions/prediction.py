@@ -1,7 +1,8 @@
 import pandas as pd
-from config import *
+import numpy as np
+import config
 import tensorflow as tf
-from tensorflow import keras
+import tensorflow.keras as keras
 from tensorflow.keras import layers
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -14,7 +15,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.class_weight import compute_class_weight
 
 
-def predict_text_cnn(model, data, job_categories=job_categories):
+def predict_text_cnn(model, data, job_categories=config.job_categories):
     if isinstance(data, pd.DataFrame):
         X_desc = data['Job_Description']
         X_title = data['Job_Title']
@@ -41,7 +42,7 @@ def predict_text_cnn(model, data, job_categories=job_categories):
     
     return y_test_predicted
 
-def predict_salary(model,data, job_categories=job_categories):
+#def predict_salary(model,data, job_categories=config.job_categories):
 
-    predictions = model.predict(X)
-    y_test_predicted = pd.DataFrame(predictions, columns=job_categories)
+#    predictions = model.predict(X)
+#    y_test_predicted = pd.DataFrame(predictions, columns=job_categories)

@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import spacy
 import nltk
+import os
 from nltk.corpus import stopwords
 
 
@@ -66,10 +67,13 @@ remove_words = ['data','year','least','working','business',
         'processing','hn','kinh','nghi','experience','relevant'
     ]
 
-# Importing the dataset
+file_path_train = os.path.join('dataset', 'Data_Jobs.csv')
+file_path_deploy = os.path.join('dataset', 'data_job_new.csv')
+
+
 nlp = spacy.load('en_core_web_md')
-df = pd.read_csv('dataset\data_job_new.csv')
-test = pd.read_csv('dataset\Data_Jobs.csv')
+df = pd.read_csv(file_path_deploy)
+test = pd.read_csv(file_path_train)
 
 from textblob import Word
 
