@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Salary Prediction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+<style>
+  table#cat-prediction {
+      border-collapse: collapse;
+      width: 50%;
+      margin-top: 20px;
+  }
+  table#cat-prediction th,
+  table#cat-prediction td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+  }
+  table#cat-prediction th {
+      background-color: #f2f2f2;
+  }
+  .blue {
+            color: rgb(53, 53, 231);
+        }
+  .green {
+      color: rgb(87, 209, 87);
+  }
+
+</style>
+<style>
+	
+	
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+</style>
+</head>
+<body class="w3-light-grey">
+
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+  <!-- The Grid -->
+    <div class="w3-row-padding">
+    <!-- Left Column -->
+      <div class="w3-quarter">
+
+        <div class="w3-white w3-text-grey w3-card-4">
+
+          <div class="w3-display-container">
+            <img width="100%" src="{{ url_for('static', filename='header.jpg') }}" alt="Example Image">
+
+          </div>
+
+          <div class="w3-container">
+            <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Number of job posting: 3144</p>
+
+            <p><i class="fa fa-globe fa-fw w3-margin-right w3-large w3-text-teal"></i>Remote jobs: 6%</p>
+            <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Placeholder</p>
+            <hr>
+          
+
+            <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Job Categories</b></p>
+            
+            <div class ="job_percentages">
+
+              {% for job, percentage in job_percentages.items() %}
+              <p>{{ job }}</p>
+                <div class="w3-light-grey w3-round-xlarge w3-small">
+                  <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ percentage }}%">{{ percentage }}%</div>
+                </div>
+              {% endfor %}
+            </div>
+            <p>* Some positions belong to multiple categories</p>
+
+            <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Salary range</b></p>
+            
+            <div class ="salary_range">
+
+              {% for job, percentage in job_percentages.items() %}
+              <p>{{ job }}</p>
+                <div class="w3-light-grey w3-round-xlarge w3-small">
+                  <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ percentage }}%">{{ percentage }}%</div>
+                </div>
+              {% endfor %}
+            </div>
+            <br>
+            
+          </div>
+
+      </div><br>
+    <!-- End Left Column -->
+    </div>
+
+    <!-- Middle Column -->
+    <div class="w3-half">
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Data jobs in Vietnam</h2>
+        <br>
+        <h3 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills most sought after</h3>
+      
+      
+
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>Technical skills</b></h5>
+          <p>Lorem ipsum .</p>
+          <hr>
+        </div>
+
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>Soft skills</b></h5>
+          <p>Consectetur adipisicing elit. .</p>
+          
+        </div>
+      </div>
+    
+      <div class="w3-container w3-card w3-white">
+        <form id="prediction-form" action="/" method="post">
+        
+          <h3 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Predictions</h3>
+          
+            <div class="form-group">
+              <div class="w3-container">
+                <h5 for="job_title" class="w3-opacity"><b>Job Title:</b></h5>
+                <input type="text" id="job_title" name="job_title">
+              </div>
+
+              <div class="w3-container">
+                <h5 for="yoe" class="w3-opacity"><b>Years of Experience:</b></h5>
+                <input type="text" id="yoe" name="yoe">
+              </div>
+
+              <div class="w3-container">
+                <h5 for="job_description" class="w3-opacity"><b>Job Description:</b></h5>
+                <textarea id="job_description" name="job_description" rows="4" cols="50"></textarea>
+                <br>
+                <hr>
+              </div>
+
+              <div class="w3-container">
+                <h5 class="w3-opacity"><b>Your Estimated Salary (optional)</b></h5>
+                <input type="text" id="est_salary" name="est_salary">
+              </div>
+
+              <br>
+            
+              <input type="submit" id="predict-button" value="Submit">
+              <hr>
+            </div>
+        </form>
+
+          {% if prediction %}
+          <div>
+            <h2>Predicted job category:</h2>
+            <table id="cat-prediction">
+              <tr>
+                <th>Category</th>
+                <th>Percentage</th>
+              </tr>
+              {% for category, percentage in prediction.items() %}
+              <tr>
+                <td>{{ category }}</td>
+                <td class="{% if percentage[:-1]|float > 80 %}blue{% elif percentage[:-1]|float > 50 %}green{% endif %}">
+                  {{ percentage }}
+                </td>
+              </tr>
+              {% endfor %}
+
+            
+            </table>
+          </div>
+          {% endif %}
+
+          <div class="w3-container">
+            <div id="prediction-result"></div>
+          </div>
+          <br>
+      </div>
+    <!-- End Middle Column -->
+      
+    
+    <!-- Right Column -->
+    </div>
+    <div class = w3-quarter>
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <h3>Job posting by locations</h3>
+
+      </div>
+      <!-- End Right Column -->
+    </div>
+    
+    <!-- End Grid -->
+  </div>
+  <!-- End Page Container -->
+</div>
+
+<footer class="w3-container w3-teal w3-center w3-margin-top">
+  <p>Find me on social media.</p>
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+
+</footer>
+
+</body>
+</html>

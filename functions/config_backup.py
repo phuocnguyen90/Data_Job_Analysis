@@ -104,8 +104,8 @@ def preprocess_dataframe(dataframe, remove_outliers=False):
         # Limit years of experience to a maximum of 10
 
         dataframe['YOE'] = dataframe['YOE'].apply(lambda x: min(x, 10))
-        # Remove the outlier jobs that have Est_Salary larger than $10,000
-        dataframe['Est_Salary'] = dataframe['Est_Salary'].apply(lambda x: min(x, 10000))
+        # Remove the outlier jobs that have Est_Salary larger than $8,000
+        dataframe['Est_Salary'] = dataframe['Est_Salary'].apply(lambda x: min(x, 8000))
 
 
     return dataframe  # Return the processed DataFrame

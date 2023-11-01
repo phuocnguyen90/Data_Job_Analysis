@@ -3,14 +3,14 @@ import numpy as np
 from .. import config
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
-from tensorflow.keras.metrics import Precision, Recall
+from keras import layers
+from keras.optimizers import Adam
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
+from keras.metrics import Precision, Recall
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential
+from keras.models import Sequential
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.class_weight import compute_class_weight
 

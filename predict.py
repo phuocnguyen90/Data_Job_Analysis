@@ -1,9 +1,10 @@
 import config
 import numpy as np
 from functions.prediction import predict_text_cnn
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow import keras
+from keras.models import load_model
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 
 # LOAD THE WHOLE MODEL
 # trained_model = load_model('trained_model/trained_textCNN_model.keras')
@@ -11,8 +12,8 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 # LOAD THE TRAINED MODEL FROM SAVED WEIGHTS
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
+from keras.models import Sequential
+from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
 
 # predict a single job with an array ['Job description','Job title']
 # job_to_predict= ['Fundamental knowledge of key machine learning and data science concepts across a number of disciplines such as Natural Language Processing, Social Network Analysis, Time Series Analysis, Computer Vision and others','Data Analyst']
