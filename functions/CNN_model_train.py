@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-from .. import config
+
 import tensorflow as tf
+import kerastuner as kt 
 from tensorflow import keras
 from keras import layers
 from keras.optimizers import Adam
@@ -13,6 +14,14 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.class_weight import compute_class_weight
+
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+import sys
+sys.path.append(parent_dir)
+
+import config  # Import config from the parent directory
 
 
 def train_text_cnn(dataframe, job_categories=config.job_categories,save_model=False):

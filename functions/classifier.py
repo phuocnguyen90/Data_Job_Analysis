@@ -1,4 +1,4 @@
-from .. import config
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 import xgboost as xgb
 from xgboost import XGBClassifier
@@ -7,6 +7,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_score, recall_score, f1_score
+# Import config from the parent directory
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+import sys
+sys.path.append(parent_dir)
+import config  
 
 vectorizer = TfidfVectorizer(
     max_features=1000,

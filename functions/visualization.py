@@ -8,9 +8,16 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from wordcloud import WordCloud
-from .. import config
 from collections import Counter
 from sklearn.metrics.pairwise import cosine_similarity
+
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+import sys
+sys.path.append(parent_dir)
+
+import config  # Import config from the parent directory
 
 def plot_job_category_counts(job_categories, dataframe):
     category_counts = []

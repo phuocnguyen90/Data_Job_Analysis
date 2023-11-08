@@ -4,3 +4,4 @@ data_env/
 .vscode/
 __pycache__/
 skills.csv
+dataset/data_with_ed_cleaned.csv

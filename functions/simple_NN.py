@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from .. import config
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -14,6 +14,13 @@ from tensorflow.keras.models import Sequential
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.class_weight import compute_class_weight
 
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+import sys
+sys.path.append(parent_dir)
+
+import config  # Import config from the parent directory
 
 vectorizer_title = TfidfVectorizer(
         max_features=20,
