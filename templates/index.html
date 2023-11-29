@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Salary Prediction</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+  <title>Salary Prediction</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    function salary_format(bin) {
+      const salaryMap = {
+        "0-500": "$0 - $500",
+        "500-1500": "$500 - $1500",
+        "1500-3000": "$1500 - $3000",
+        "3000-5000": "$3000 - $5000",
+        "More than 5000": "More than $5000"
+      };
 
+      const maxSalary = 6000; // Maximum salary for the progress bar
+      const count = sal_count[bin]; // Number of jobs in the bin
+
+      // Calculate the percentage of the maximum value
+      const percentage = (count / maxSalary) * 100;
+
+      // Return an object with formatted salary and percentage
+      return {
+        formatted: salaryMap[bin],
+        percentage: percentage.toFixed(2) // Rounding to two decimal places
+      };
+    }
+    
+    window.addEventListener('DOMContentLoaded', function() {
+      const salaryInput = document.getElementById('est_salary');
+      salaryInput.value = '0';
+      document.querySelector('form').addEventListener('submit', function(event) {
+        if (salaryInput.value.trim() === '') {
+          salaryInput.value = '0';
+        }
+      });
+    });
+  </script>
 
 <style>
   table#cat-prediction {
@@ -65,28 +97,44 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
             <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Job Categories</b></p>
             
-            <div class ="job_percentages">
-
+            <div class="job_percentages">
+              <p class="w3-large w3-text-theme"><b>Job Category</b></p>
               {% for job, percentage in job_percentages.items() %}
-              <p>{{ job }}</p>
-                <div class="w3-light-grey w3-round-xlarge w3-small">
-                  <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ percentage }}%">{{ percentage }}%</div>
-                </div>
-              {% endfor %}
-            </div>
-            <p>* Some positions belong to multiple categories</p>
-
-            <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Salary range</b></p>
+                <div class="job_category_row">
+                  <p class="job_category_label">{{ job }}</p>
             
-            <div class ="salary_range">
-
-              {% for job, percentage in job_percentages.items() %}
-              <p>{{ job }}</p>
-                <div class="w3-light-grey w3-round-xlarge w3-small">
-                  <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ percentage }}%">{{ percentage }}%</div>
+                  
+                  <div
+                  
+                  class="w3-light-grey w3-round-xlarge w3-small">
+                  
+                          
+                  <div
+                  
+                  class="w3-container w3-center w3-round-xlarge w3-teal"
+                  
+                  style="width:{{ percentage }}%">{{ percentage }}%</div>
+                  </div>
                 </div>
               {% endfor %}
             </div>
+            
+            <div class="salary_range">
+              <p class="w3-large w3-text-theme"><b>Salary Range</b></p>
+              {% for bin, count in sal_count.items() %}
+                {% set salaryInfo = salary_format(bin) %}
+                  <p class="salary_range_row">
+                {{ salaryInfo.formatted }}: {{ count }} jobs (USD {{ salaryInfo.formatted }})
+                </p>
+                <div class="w3-light-grey w3-round-xlarge w3-small">
+                  <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ salaryInfo.percentage }}%">
+                    {{ salaryInfo.percentage }}%
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            
+            
             <br>
             
           </div>

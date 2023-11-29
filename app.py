@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from predict import get_category, format_prediction, category_names
+import json
 import subprocess
 
 
@@ -8,10 +9,10 @@ app = Flask(__name__, template_folder="templates")
 @app.route("/")
 
 
+
 def index():
-
-
-    return render_template('index.html', job_percentages=job_percentages)
+    Job_Category, Est_Salary = load_job_percentages()
+    return render_template('index.html', job_percentages=Job_Category, sal_count=Est_Salary )
 
 @app.route('/', methods=['GET', 'POST'])
 def predict():
@@ -29,19 +30,20 @@ def predict():
         # Format the prediction into a human-readable format
         formatted_prediction = format_prediction(predicted_results)
         print(f"Processed data: {predicted_results}")
+        Job_Category, Est_Salary = load_job_percentages()
 
-        return render_template('index.html', prediction=formatted_prediction, job_percentages=job_percentages )
+        return render_template('index.html', prediction=formatted_prediction, job_percentages=Job_Category, sal_count=Est_Salary )
 
     return render_template('index.html')
-job_percentages = {
-    'Data Analyst': 90,
-    'Data Engineer': 80,
-    'Data Scientist': 75,
-    'Business Analyst': 50,
-    'Business Intelligence': 50,
-    'Others': 50
-}
 
+def load_job_percentages():
+    with open('static/EDA_result.json', 'r') as file:
+        job_percentages_dict = json.load(file)
+
+    Job_Category = job_percentages_dict.get('Job_Category')
+    Est_Salary = job_percentages_dict.get('Est_Salary')
+
+    return Job_Category, Est_Salary
 
 if __name__ == '__main__':
-        app.run(host="0.0.0.0", port=50100, debug=True)
+        app.run(host="localhost", port=8080, debug=True)

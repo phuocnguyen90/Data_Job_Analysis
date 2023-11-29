@@ -1,7 +1,8 @@
 predictions_for_manual_review.csv
 predicted_df_for_manual_review.csv
-data_env/
+data_venv/
 .vscode/
 __pycache__/
 skills.csv
 dataset/data_with_ed_cleaned.csv
+my-salary-predictor-app/node_modules

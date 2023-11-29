@@ -3,8 +3,8 @@ import numpy as np
 from functions.prediction import predict_text_cnn
 from tensorflow import keras
 from keras.models import load_model
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from keras_preprocessing.text import Tokenizer
+from keras_preprocessing.sequence import pad_sequences
 
 # LOAD THE WHOLE MODEL
 # trained_model = load_model('trained_model/trained_textCNN_model.keras')

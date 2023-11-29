@@ -4,8 +4,9 @@ import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from keras.optimizers import Adam
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from keras import preprocessing
+from keras_preprocessing.text import Tokenizer
+from keras_preprocessing.sequence import pad_sequences
 from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
 from keras.metrics import Precision, Recall
 from sklearn.model_selection import train_test_split

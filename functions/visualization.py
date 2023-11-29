@@ -10,14 +10,13 @@ from nltk.tag import pos_tag
 from wordcloud import WordCloud
 from collections import Counter
 from sklearn.metrics.pairwise import cosine_similarity
-
+# Import config from the parent directory
 import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 import sys
 sys.path.append(parent_dir)
-
-import config  # Import config from the parent directory
+import config 
 
 def plot_job_category_counts(job_categories, dataframe):
     category_counts = []
@@ -44,26 +43,24 @@ def plot_job_category_counts(job_categories, dataframe):
     plt.xticks(rotation=45)
     plt.show()
 
-def plot_salary_distribution_by_experience(dataframe):
-
-    # Define bin intervals for 'Min_YOE'
+def plot_salary_distribution_by_experience(dataframe, action='show'):
+    # Define bin intervals 
     bins = [0, 1, 2, 5, 7, 10, float('inf')]
-
-    # Categorize 'Min_YOE' into bins and create a new column 'Min_YOE_Bin'
     dataframe['YOE_Bin'] = pd.cut(dataframe['YOE'], bins=bins, labels=[f'{bins[i]}-{bins[i+1]}' for i in range(len(bins) - 1)], right=False)
 
     # Extract data for the box plot
     boxplot_data = [dataframe['Est_Salary'][dataframe['YOE_Bin'] == bin_label].dropna().values for bin_label in dataframe['YOE_Bin'].cat.categories]
 
-    # Create the box plot with custom colors for median (orange) and mean (blue)
-    plt.figure(figsize=(10, 15))
-    plt.xticks(rotation=45)
-    plt.title("Salary Distribution by Years of Experience")
-    plt.xlabel("Years of Experience")
-    plt.ylabel("Estimated Salary")
+    median_values = []
+    for data in boxplot_data:
+        if len(data) > 0:  
+            median = np.median(data)
+            median_values.append(median)
+        else:
+            median_values.append(np.nan)
 
-    # Calculate median values for each bin
-    median_values = [np.median(data) for data in boxplot_data]
+    # Initialize the figure before creating the box plot
+    plt.figure(figsize=(10, 15))
 
     # Create the box plot with custom colors
     box_plot = plt.boxplot(boxplot_data, labels=dataframe['YOE_Bin'].cat.categories, patch_artist=True)
@@ -87,9 +84,20 @@ def plot_salary_distribution_by_experience(dataframe):
     # Create a legend for mean and median colors
     mean_patch = plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=10, label='Mean')
     median_patch = plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='orange', markersize=10, label='Median')
-    plt.legend(handles=[mean_patch, median_patch])
 
-    plt.show()
+    plt.legend(handles=[mean_patch, median_patch])
+    # Create the box plot with custom colors for median (orange) and mean (blue)
+
+    plt.xticks(rotation=45)
+    plt.title("Salary Distribution by Years of Experience")
+    plt.xlabel("Years of Experience")
+    plt.ylabel("Estimated Salary")
+    
+
+    if action == 'save':
+        plt.savefig('static/salary_distribution_plot.png')  # Save the plot as an image in the 'static' folder
+    elif action == 'show':
+        plt.show()
 
 
 def plot_top_locations(dataframe, n=15):
