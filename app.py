@@ -8,11 +8,14 @@ app = Flask(__name__, template_folder="templates")
 
 @app.route("/")
 
+# Function to process and format the salary data
 
 
 def index():
-    Job_Category, Est_Salary = load_job_percentages()
-    return render_template('index.html', job_percentages=Job_Category, sal_count=Est_Salary )
+    job_category, formatted_salaries = load_and_format_job_percentages()
+    return render_template('index.html', job_percentages=job_category, formatted_salaries=formatted_salaries)
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def predict():
@@ -30,20 +33,48 @@ def predict():
         # Format the prediction into a human-readable format
         formatted_prediction = format_prediction(predicted_results)
         print(f"Processed data: {predicted_results}")
-        Job_Category, Est_Salary = load_job_percentages()
+        job_category, formatted_salaries = load_and_format_job_percentages()
 
-        return render_template('index.html', prediction=formatted_prediction, job_percentages=Job_Category, sal_count=Est_Salary )
+        return render_template('index.html', prediction=formatted_prediction, job_percentages=job_category, formatted_salaries=formatted_salaries)
+
 
     return render_template('index.html')
 
-def load_job_percentages():
+def load_and_format_job_percentages():
     with open('static/EDA_result.json', 'r') as file:
         job_percentages_dict = json.load(file)
 
-    Job_Category = job_percentages_dict.get('Job_Category')
-    Est_Salary = job_percentages_dict.get('Est_Salary')
+    job_category = job_percentages_dict.get('Job_Category')
+    est_salary = job_percentages_dict.get('Est_Salary')
+    formatted_salaries = format_salaries(est_salary)
 
-    return Job_Category, Est_Salary
+    return job_category, formatted_salaries
+
+def format_salaries(sal_count):
+    salary_map = {
+        "0-500": "$0 - $500",
+        "500-1500": "$500 - $1500",
+        "1500-3000": "$1500 - $3000",
+        "3000-5000": "$3000 - $5000",
+        "More than 5000": "More than $5000"
+    }
+
+    # Calculate total job count
+    total_count = sum(sal_count.values())
+
+    processed_salaries = {}
+    for bin, count in sal_count.items():
+        # Calculate percentage of total
+        percentage = (count / total_count) * 100
+        processed_salaries[bin] = {
+            'formatted': salary_map[bin],
+            'percentage': round(percentage, 2),  # Rounded to two decimal places
+            'count': count
+        }
+
+    return processed_salaries
+
+
 
 if __name__ == '__main__':
         app.run(host="localhost", port=8080, debug=True)
