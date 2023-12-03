@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 from predict import get_category, format_prediction, category_names
 import json
 import subprocess
+from collections import OrderedDict
+
 
 
 app = Flask(__name__, template_folder="templates")
@@ -51,24 +53,23 @@ def load_and_format_job_percentages():
     return job_category, formatted_salaries
 
 def format_salaries(sal_count):
-    salary_map = {
-        "0-500": "$0 - $500",
-        "500-1500": "$500 - $1500",
-        "1500-3000": "$1500 - $3000",
-        "3000-5000": "$3000 - $5000",
-        "More than 5000": "More than $5000"
-    }
+    salary_map = OrderedDict([
+        ("0-500", "$0 - $500"),
+        ("500-1500", "$500 - $1500"),
+        ("1500-3000", "$1500 - $3000"),
+        ("3000-5000", "$3000 - $5000"),
+        ("More than 5000", "More than $5000")
+    ])
 
-    # Calculate total job count
     total_count = sum(sal_count.values())
 
-    processed_salaries = {}
-    for bin, count in sal_count.items():
-        # Calculate percentage of total
-        percentage = (count / total_count) * 100
+    processed_salaries = OrderedDict()
+    for bin in salary_map.keys():
+        count = sal_count.get(bin, 0)  # Get count for each bin, default to 0 if not found
+        percentage = (count / total_count) * 100 if total_count > 0 else 0  # Avoid division by zero
         processed_salaries[bin] = {
             'formatted': salary_map[bin],
-            'percentage': round(percentage, 2),  # Rounded to two decimal places
+            'percentage': round(percentage, 2),
             'count': count
         }
 
