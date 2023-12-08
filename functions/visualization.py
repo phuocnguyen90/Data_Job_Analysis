@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import nltk
 import re
 import string
+import json
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
@@ -100,7 +101,7 @@ def plot_salary_distribution_by_experience(dataframe, action='show'):
         plt.show()
 
 
-def plot_top_locations(dataframe, n=15):
+def plot_top_locations(dataframe, n=15, save=False):
     location_counts = dataframe['Location'].value_counts()
 
     # To see the top N locations with the most jobs, you can use:
@@ -121,6 +122,13 @@ def plot_top_locations(dataframe, n=15):
     plt.ylabel("Number of Jobs (Log Scale)")
     plt.xticks(rotation=45)
     plt.tight_layout()
+
+    # Save the job count per location into a JSON file if save=True
+    if save:
+        output_file = 'job_counts_per_location.json'
+        job_counts_dict = top_n_locations.to_dict()
+        with open(output_file, 'w') as json_file:
+            json.dump(job_counts_dict, json_file)
 
     # Show the bar chart
     plt.show()
