@@ -67,7 +67,7 @@ remove_words = ['data','year','least','working','business',
         'processing','hn','kinh','nghi','experience','relevant'
     ]
 
-file_path_train = os.path.join('dataset', 'merged_files.csv')
+file_path_train = os.path.join('dataset', 'Data_Jobs.csv')
 file_path_deploy = os.path.join('dataset', 'data_job_new.csv')
 
 

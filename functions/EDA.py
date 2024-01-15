@@ -13,7 +13,7 @@ import config
 job_categories =config.job_categories
 df = config.test
 
-def generate_job_cat_percent(df, job_categories):
+def generate_json_report(df, job_categories):
     if not set(job_categories).issubset(df.columns):
         raise ValueError("Job category columns not found in the DataFrame.")
 
@@ -31,11 +31,15 @@ def generate_job_cat_percent(df, job_categories):
 
     df['Est_Salary'] = pd.cut(df['Est_Salary'], bins=bins, labels=labels, include_lowest=True)
     salary_counts = df['Est_Salary'].value_counts().to_dict()
-    job_percentages={}
 
-    # Combine job category and salary range percentages into a single dictionary
-    job_percentages['Job_Category'] = category_percentages
-    job_percentages['Est_Salary'] = salary_counts
+    # Calculate job count per city
+    city_counts = df['Location'].value_counts().to_dict()
+
+    job_percentages = {
+        'Job_Category': category_percentages,
+        'Est_Salary': salary_counts,
+        'City_Job_Count': city_counts
+    }
 
     # Convert dictionary to JSON
     job_percentages_json = json.dumps(job_percentages)
@@ -48,7 +52,7 @@ def generate_job_cat_percent(df, job_categories):
 # Call the function and handle the potential error
 try:
     # Assuming df and job_categories are defined somewhere
-    generate_job_cat_percent(df, job_categories)
+    generate_json_report(df, job_categories)
 except ValueError as e:
     print(f"Error: {e}")
 

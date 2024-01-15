@@ -88,7 +88,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           </div>
 
           <div class="w3-container">
-            <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Number of job posting: 3144</p>
+            <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Number of job postings: {{ total_jobs }}</p>
+
 
             <p><i class="fa fa-globe fa-fw w3-margin-right w3-large w3-text-teal"></i>Remote jobs: 6%</p>
             <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Placeholder</p>
@@ -244,22 +245,22 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
         <hr>
 
 
-        <p class="w3-large w3-text-theme"><b>Job posting by locations</b></p>
+
 
         <div class="job_location">
-          <p class="w3-large w3-text-theme"><b>Salary Range</b></p>
-          {% for bin, salaryInfo in formatted_salaries.items() %}
-            <p class="salary_range_row">
-              {{ salaryInfo.formatted }}: {{ salaryInfo.count }} jobs
-            </p>
-            <div class="w3-light-grey w3-round-xlarge w3-small">
-              <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ salaryInfo.percentage }}%">
-                {{ salaryInfo.percentage }}%
-              </div>
-            </div>
-          {% endfor %}
+          <p class="w3-large w3-text-theme"><b>Job Locations</b></p>
+              {% for location, count in formatted_locations.items() %}
+                  <p class="job_location_row">
+                      {{ location }}: {{ count }} jobs
+                  </p>
+                  <div class="w3-light-grey w3-round-xlarge w3-small">
+                      <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:{{ log_scaled_widths[location] }}%">
+                          <!-- The width is log-scaled -->
+                      </div>
+                  </div>
+              {% endfor %}
         </div>
-        <br>
+        <hr>
 
       </div>
       <!-- End Right Column -->

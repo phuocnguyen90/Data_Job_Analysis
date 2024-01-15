@@ -13,9 +13,9 @@ from collections import Counter
 from sklearn.metrics.pairwise import cosine_similarity
 # Import config from the parent directory
 import os
+import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-import sys
 sys.path.append(parent_dir)
 import config 
 
