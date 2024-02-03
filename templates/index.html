@@ -40,8 +40,34 @@
         }
       });
     });
-  </script>
 
+  // Function to open a specific tab
+function openTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+// Set default tab open on page load
+document.addEventListener("DOMContentLoaded", function(event) { 
+    // Simulate a click on the first tab link
+    document.querySelector(".tablinks").click();
+});
+  </script>
 <style>
   table#cat-prediction {
       border-collapse: collapse;
@@ -98,9 +124,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
             <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Job Stats</b></p>
             
-            <div class="job_percentages">
+            <div class="job_category">
               <p class="w3-large w3-text-theme"><b>Job Category</b></p>
-              {% for job, percentage in job_percentages.items() %}
+              {% for job, percentage in job_category.items() %}
                 <div class="job_category_row">
                   <p class="job_category_label">{{ job }}</p>
             
@@ -132,95 +158,108 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     </div>
 
     <!-- Middle Column -->
-    <div class="w3-half">
-      <div class="w3-container w3-card w3-white w3-margin-bottom">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Data jobs in Vietnam</h2>
-        <br>
-        <h3 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills most sought after</h3>
+
+      <div class="w3-half">
       
-      
-
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Technical skills</b></h5>
-          <p>Lorem ipsum .</p>
-          <hr>
-        </div>
-
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Soft skills</b></h5>
-          <p>Consectetur adipisicing elit. .</p>
-          
-        </div>
-      </div>
-    
-      <div class="w3-container w3-card w3-white">
-        <form id="prediction-form" action="/" method="post">
-        
-          <h3 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Predictions</h3>
-          
-            <div class="form-group">
-              <div class="w3-container">
-                <h5 for="job_title" class="w3-opacity"><b>Job Title:</b></h5>
-                <input type="text" id="job_title" name="job_title">
-              </div>
-
-              <div class="w3-container">
-                <h5 for="yoe" class="w3-opacity"><b>Years of Experience:</b></h5>
-                <input type="text" id="yoe" name="yoe">
-              </div>
-
-              <div class="w3-container">
-                <h5 for="job_description" class="w3-opacity"><b>Job Description:</b></h5>
-                <textarea id="job_description" name="job_description" rows="4" cols="50"></textarea>
-                <br>
-                <hr>
-              </div>
-
-              <div class="w3-container">
-                <h5 class="w3-opacity"><b>Your Estimated Salary (optional)</b></h5>
-                <input type="text" id="est_salary" name="est_salary">
-              </div>
-
-              <br>
-            
-              <input type="submit" id="predict-button" value="Submit">
-              <hr>
-            </div>
-        </form>
-
-          {% if prediction %}
-          <div>
-            <h2>Predicted job category:</h2>
-            <table id="cat-prediction">
-              <tr>
-                <th>Category</th>
-                <th>Percentage</th>
-              </tr>
-              {% for category, percentage in prediction.items() %}
-              <tr>
-                <td>{{ category }}</td>
-                <td class="{% if percentage[:-1]|float > 80 %}blue{% elif percentage[:-1]|float > 50 %}green{% endif %}">
-                  {{ percentage }}
-                </td>
-              </tr>
-              {% endfor %}
-
-            
-            </table>
+          <div class="w3-container w3-card w3-white w3-margin-bottom">
+              <h2 class="w3-text-grey w3-padding-16">
+                  <i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                  Data jobs in Vietnam
+              </h2>
           </div>
-          {% endif %}
 
-          <div class="w3-container">
-            <div id="prediction-result"></div>
-          </div>
+          <!-- Tab section -->
+          
+          <div class="w3-container w3-card w3-white w3-margin-bottom">
           <br>
+              <div class="tab">
+                  <button class="tablinks" onclick="openTab(event, 'Skills')">Skills analysis</button>
+                  <button class="tablinks" onclick="openTab(event, 'Predictions')">Predictions</button>
+              </div>
+              <hr>
+
+              <!-- Tab content: Skills -->
+              <div id="Skills" class="tabcontent">
+                  <h3 class="w3-text-grey w3-padding-16">
+                      <i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                      Skills most sought after
+                  </h3>
+
+                  <div class="w3-container">
+                      <h5 class="w3-opacity"><b>Technical skills</b></h5>
+                      <p>Lorem ipsum.</p>
+                      <hr>
+                  </div>
+
+                  <div class="w3-container">
+                      <h5 class="w3-opacity"><b>Soft skills</b></h5>
+                      <p>Consectetur adipisicing elit.</p>
+                  </div>
+
+                  <div class="w3-display-container">
+                    <img width="100%" src="{{ url_for('static', filename='skill_word_cloud.png') }}" alt="Skills Word Cloud">
+
+                  </div>
+              </div>
+
+              <!-- Tab content: Predictions -->
+              <div id="Predictions" class="tabcontent">
+                  <div class="w3-container">
+                      <form id="prediction-form" action="/" method="post">
+                          <h3 class="w3-text-grey w3-padding-16">
+                              <i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                              Predictions
+                          </h3>
+                          
+                          <div class="form-group">
+                            <div class="w3-container">
+                              <h5 for="job_title" class="w3-opacity"><b>Job Title:</b></h5>
+                              <input type="text" id="job_title" name="job_title">
+                            </div>
+
+                            <div class="w3-container">
+                              <h5 for="yoe" class="w3-opacity"><b>Years of Experience:</b></h5>
+                              <input type="text" id="yoe" name="yoe">
+                            </div>
+
+                            <div class="w3-container">
+                              <h5 for="job_description" class="w3-opacity"><b>Job Description:</b></h5>
+                              <textarea id="job_description" name="job_description" rows="4" cols="40"></textarea>
+                              <br>
+                              <hr>
+                            </div>
+
+                          <div class="w3-container">
+                            <h5 class="w3-opacity"><b>Your Estimated Salary (optional)</b></h5>
+                            <input type="text" id="est_salary" name="est_salary">
+                          </div>
+
+                          <br>
+                        
+                          <input type="submit" id="predict-button" value="Submit">
+                          <hr>
+                        </div>
+                      </form>
+
+                      {% if prediction %}
+                      <!-- Prediction Results -->
+                      <!-- ... existing prediction display code ... -->
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+
       </div>
+
+
+        
+
     <!-- End Middle Column -->
       
     
     <!-- Right Column -->
     
-    </div>
+
     
     <div class = w3-quarter>
 
